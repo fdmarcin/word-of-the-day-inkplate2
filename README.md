@@ -98,6 +98,22 @@ Any word present in `overrides.json` bypasses the API entirely. All three fields
 
 TODO: support partial overrides, where only some fields replace the API response.
 
+## Adapting for another language
+
+The project has minimal language-specific hardcoding.
+To adapt it:
+
+1. Replace `data/wordlist.txt` with a word list for your target language, one word or phrase per line, and run `parse_wordlist.py`.
+2. In `render/render.py`, update the two API language codes at the top of the file:
+   - `API_DICT` uses an ISO 639-1 code (for example, `pt` for Portuguese).
+     FreeDictionaryAPI's supported languages are listed in its [documentation](https://freedictionaryapi.com).
+   - The Tatoeba (used as backup source for examples) call in `fetch_tatoeba_example()` uses an ISO 639-3 code (for example, `por` for Portuguese).
+     Tatoeba's supported languages are listed on their [statistics page](https://tatoeba.org/en/stats/sentences_by_language).
+3. Choose a font that covers your target script, and update the font constants accordingly.
+
+Note that FreeDictionaryAPI coverage varies significantly by language, and the Tatoeba minimum word length heuristic (`TATOEBA_MIN_CHARS`) was chosen for Portuguese.
+You might want to adjust it for languages with different word length distributions.
+
 ## License
 
 This project is licensed under the MIT license.
