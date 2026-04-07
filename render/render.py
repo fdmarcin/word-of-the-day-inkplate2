@@ -26,18 +26,22 @@ HISTORY_JSON = DATA_DIR / "history.json"
 OVERRIDES_JSON = DATA_DIR / "overrides.json"
 OUTPUT_PNG = OUTPUT_DIR / "today.png"
 
-FONT_ROMAN = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"
-FONT_ITALIC = FONTS_DIR / "Literata-Italic-VariableFont_opsz,wght.ttf"
+FONT_ROMAN = FONTS_DIR / "Charter Regular.ttf"
+FONT_ROMAN_BOLD = FONTS_DIR / "Charter Bold.ttf"
+FONT_ITALIC = FONTS_DIR / "Charter Italic.ttf"
 
-# Alternative fonts (static, use ImageFont.truetype() directly without set_variation_by_axes):
-# FONT_ROMAN = FONTS_DIR / "Vollkorn-Regular.ttf"
-# FONT_ITALIC = FONTS_DIR / "Vollkorn-Italic.ttf"
-
+# Alternative fonts:
 # FONT_ROMAN = FONTS_DIR / "Charis-Regular.ttf"
+# FONT_ROMAN_BOLD = FONTS_DIR / "Charis-Bold.ttf"
 # FONT_ITALIC = FONTS_DIR / "Charis-Italic.ttf"
 
-# FONT_ROMAN = FONTS_DIR / "Charter Regular.ttf"
-# FONT_ITALIC = FONTS_DIR / "Charter Italic.ttf"
+# FONT_ROMAN = FONTS_DIR / "Vollkorn-Regular.ttf"
+# FONT_ROMAN_BOLD = FONTS_DIR / "Vollkorn-Bold.ttf"
+# FONT_ITALIC = FONTS_DIR / "Vollkorn-Italic.ttf"
+
+# FONT_ROMAN = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"
+# FONT_ROMAN_BOLD = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"  # variable, wght axis used
+# FONT_ITALIC = FONTS_DIR / "Literata-Italic-VariableFont_opsz,wght.ttf"
 
 # ---------------------------------------------------------------------------
 # Display constants
@@ -106,17 +110,18 @@ def pick_word(words: list, history: set) -> str | None:
 
 
 def load_font(path: Path, size: int, wght: int) -> ImageFont.FreeTypeFont:
-    """Load a variable font and set its weight axis."""
+    """Load a font. For variable fonts, sets the weight axis; for static fonts,
+    loads as-is (the wght argument is ignored for static fonts)."""
     font = ImageFont.truetype(str(path), size, layout_engine=ImageFont.Layout.BASIC)
-    axes = font.get_variation_axes()
-    values = []
-    for axis in axes:
-        tag = axis["name"].decode() if isinstance(axis["name"], bytes) else axis["name"]
-        if tag == "wght":
-            values.append(wght)
-        else:
-            values.append(axis["default"])
-    font.set_variation_by_axes(values)
+    try:
+        axes = font.get_variation_axes()
+        values = []
+        for axis in axes:
+            tag = axis["name"].decode() if isinstance(axis["name"], bytes) else axis["name"]
+            values.append(wght if tag == "wght" else axis["default"])
+        font.set_variation_by_axes(values)
+    except OSError:
+        pass  # static font, no variation axes
     return font
 
 
@@ -216,7 +221,7 @@ def render_png(word: str, pos: str, definition: str, example: str):
     img = Image.new("RGB", (WIDTH, HEIGHT), WHITE)
     draw = ImageDraw.Draw(img)
 
-    font_word = load_font(FONT_ROMAN, FONT_SIZE_WORD, WGHT_BOLD)
+    font_word = load_font(FONT_ROMAN_BOLD, FONT_SIZE_WORD, WGHT_BOLD)
     font_pos = load_font(FONT_ITALIC, FONT_SIZE_POS, WGHT_REGULAR)
     font_def = load_font(FONT_ROMAN, FONT_SIZE_DEF, WGHT_REGULAR)
     font_ex = load_font(FONT_ITALIC, FONT_SIZE_EXAMPLE, WGHT_REGULAR)
