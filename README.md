@@ -1,6 +1,6 @@
 # Word of the day (PT)
 
-Display a Portuguese word a day on an Inkplate 2.
+Display a Portuguese word a day on an [Inkplate 2](https://soldered.com/products/inkplate-2).
 
 Fetches definitions from [FreeDictionaryAPI](https://freedictionaryapi.com) (Wiktionary data) and example sentences from [Tatoeba](https://tatoeba.org) as a fallback.
 Renders a 212×104 PNG served over HTTP, which the Inkplate fetches on a daily schedule.
