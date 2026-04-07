@@ -19,6 +19,7 @@ With mise:
 
 ```sh
 mise install
+pip install -r requirements.txt
 ```
 
 Without mise, create and activate a virtualenv manually, then install dependencies:
