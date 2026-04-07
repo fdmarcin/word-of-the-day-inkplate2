@@ -29,16 +29,6 @@ OUTPUT_PNG = OUTPUT_DIR / "today.png"
 FONT_ROMAN = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"
 FONT_ITALIC = FONTS_DIR / "Literata-Italic-VariableFont_opsz,wght.ttf"
 
-# Alternative fonts (static, use ImageFont.truetype() directly without set_variation_by_axes):
-# FONT_ROMAN = FONTS_DIR / "Vollkorn-Regular.ttf"
-# FONT_ITALIC = FONTS_DIR / "Vollkorn-Italic.ttf"
-
-# FONT_ROMAN = FONTS_DIR / "Charis-Regular.ttf"
-# FONT_ITALIC = FONTS_DIR / "Charis-Italic.ttf"
-
-# FONT_ROMAN = FONTS_DIR / "Charter Regular.ttf"
-# FONT_ITALIC = FONTS_DIR / "Charter Italic.ttf"
-
 # ---------------------------------------------------------------------------
 # Display constants
 # ---------------------------------------------------------------------------

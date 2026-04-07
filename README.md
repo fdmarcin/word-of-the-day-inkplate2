@@ -39,11 +39,6 @@ Parse it once to generate `data/words.json`:
 python render/parse_wordlist.py
 ```
 
-### Fonts
-
-Font files are expected in `render/fonts/`. The active font is configured at the top of `render/render.py`.
-See the commented-out alternatives in that file for the available options.
-
 ### Apache2
 
 TODO: document vhost configuration and output directory setup.
@@ -57,6 +52,8 @@ python render/render.py
 ```
 
 Output is written to `output/today.png`.
+
+The word used is added to `data/history.json` so it doesn't appear again.
 
 ### Cron
 
@@ -109,7 +106,9 @@ To adapt it:
      FreeDictionaryAPI's supported languages are listed in its [documentation](https://freedictionaryapi.com).
    - The Tatoeba (used as backup source for examples) call in `fetch_tatoeba_example()` uses an ISO 639-3 code (for example, `por` for Portuguese).
      Tatoeba's supported languages are listed on their [statistics page](https://tatoeba.org/en/stats/sentences_by_language).
-3. Choose a font that covers your target script, and update the font constants accordingly.
+3. If you need another font for your target script, the current code supports a variable font like Literata.
+   Commit [cbe4](https://github.com/fdmarcin/word-of-the-day-inkplate2/commit/cbe43081cc12dba7e5ebd188b374e03589b7d8a0) shows needed changes to use static fonts.
+   You'd need separate `.ttf` files for Regular, Bold, and Italic variants.
 
 Note that FreeDictionaryAPI coverage varies significantly by language, and the Tatoeba minimum word length heuristic (`TATOEBA_MIN_CHARS`) was chosen for Portuguese.
 You might want to adjust it for languages with different word length distributions.
@@ -119,4 +118,4 @@ You might want to adjust it for languages with different word length distributio
 This project is licensed under the MIT license.
 See [LICENSE](./LICENSE).
 
-Font licenses are in `render/fonts/license/`.
+The font used is Literata and its license is in `render/fonts`.
