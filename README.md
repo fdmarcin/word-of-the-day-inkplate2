@@ -7,7 +7,11 @@ Renders a 212×104 PNG served over HTTP, which the Inkplate fetches on a daily s
 
 Example image:
 
-![definition and example for sindicato](example.png)
+![definition and example for pretender](img/example.png)
+
+IRL, with a teaspoon for scale:
+
+![definition and example for pretender](img/example-IRL.jpg)
 
 ## Prerequisites
 
@@ -45,7 +49,19 @@ python render/parse_wordlist.py
 
 ### Apache2
 
-TODO: document vhost configuration and output directory setup.
+To serve the image, you can use an Apache2 server on a RaspberryPi or a home lab PC.
+To install and configure Apache2 on a RapsberryPi or a Debian/Ubuntu PC:
+
+1. Run the following commands in the terminal:
+
+   In the `chown` command, change `pi` to use your username.
+
+   ```bash
+   sudo apt update
+   sudo apt install apache2 -y
+   sudo chown pi:www-data /var/www/html
+   sudo chmod 755 /var/www/html
+   ```
 
 ## Running
 
@@ -55,7 +71,7 @@ Generate today's image:
 python render/render.py
 ```
 
-Output is written to `output/today.png`.
+Output is written to `output/today.png` and the file is moved to `/var/www/html/today.png`.
 
 The word used is added to `data/history.json` so it doesn't appear again.
 
