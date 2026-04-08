@@ -87,7 +87,7 @@ The word used is added to `data/history.json` so it doesn't appear again.
 Schedule daily generation and moving image at 03:00:
 
 ```sh
-0 3 * * * /path/to/.venv/bin/python /path/to/render/render.py && mv output/today.png /var/www/html
+0 3 * * * cd /path/to/word-of-the-day-inkplate2 && python render/render.py && mv output/today.png /var/www/html
 ```
 
 ## Inkplate configuration
