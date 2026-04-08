@@ -27,7 +27,7 @@ OVERRIDES_JSON = DATA_DIR / "overrides.json"
 OUTPUT_PNG = OUTPUT_DIR / "today.png"
 
 FONT_ROMAN = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"
-FONT_PIXEL = FONTS_DIR / "PixelOperator.ttf"
+FONT_PIXEL = FONTS_DIR / "PixelOperator.ttf" # also available, but not used: "PixelOperator-Bold.ttf"
 
 # ---------------------------------------------------------------------------
 # Display constants
