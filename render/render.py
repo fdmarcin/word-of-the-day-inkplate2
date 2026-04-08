@@ -27,7 +27,7 @@ OVERRIDES_JSON = DATA_DIR / "overrides.json"
 OUTPUT_PNG = OUTPUT_DIR / "today.png"
 
 FONT_ROMAN = FONTS_DIR / "Literata-VariableFont_opsz,wght.ttf"
-FONT_ITALIC = FONTS_DIR / "Literata-Italic-VariableFont_opsz,wght.ttf"
+FONT_PIXEL = FONTS_DIR / "PixelOperator.ttf"
 
 # ---------------------------------------------------------------------------
 # Display constants
@@ -39,16 +39,14 @@ DIVIDER_MARGIN = 3   # gap between word bottom and divider
 CONTENT_MARGIN = 4   # gap between divider and definition top
 
 BLACK = (0, 0, 0)
-GREY = (0, 0, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 
 FONT_SIZE_WORD = 26
-FONT_SIZE_POS = 12
+FONT_SIZE_POS = 13
 FONT_SIZE_DEF = 13
-FONT_SIZE_EXAMPLE = 12
+FONT_SIZE_EXAMPLE = 13
 
-WGHT_REGULAR = 400
 WGHT_BOLD = 700
 
 # ---------------------------------------------------------------------------
@@ -96,7 +94,7 @@ def pick_word(words: list, history: set) -> str | None:
     return random.choice(remaining)
 
 
-def load_font(path: Path, size: int, wght: int) -> ImageFont.FreeTypeFont:
+def load_variable_font(path: Path, size: int, wght: int) -> ImageFont.FreeTypeFont:
     """Load a variable font and set its weight axis."""
     font = ImageFont.truetype(str(path), size, layout_engine=ImageFont.Layout.BASIC)
     axes = font.get_variation_axes()
@@ -109,6 +107,11 @@ def load_font(path: Path, size: int, wght: int) -> ImageFont.FreeTypeFont:
             values.append(axis["default"])
     font.set_variation_by_axes(values)
     return font
+
+
+def load_font(path: Path, size: int) -> ImageFont.FreeTypeFont:
+    """Load a static font."""
+    return ImageFont.truetype(str(path), size, layout_engine=ImageFont.Layout.BASIC)
 
 
 def fetch_entry(word: str) -> dict | None:
@@ -212,22 +215,22 @@ def render_png(word: str, pos: str, definition: str, example: str):
     img = Image.new("RGB", (WIDTH, HEIGHT), WHITE)
     draw = ImageDraw.Draw(img)
 
-    font_word = load_font(FONT_ROMAN, FONT_SIZE_WORD, WGHT_BOLD)
-    font_pos = load_font(FONT_ITALIC, FONT_SIZE_POS, WGHT_REGULAR)
-    font_def = load_font(FONT_ROMAN, FONT_SIZE_DEF, WGHT_REGULAR)
-    font_ex = load_font(FONT_ROMAN, FONT_SIZE_EXAMPLE, WGHT_REGULAR)
+    font_word = load_variable_font(FONT_ROMAN, FONT_SIZE_WORD, WGHT_BOLD)
+    font_pos = load_font(FONT_PIXEL, FONT_SIZE_POS)
+    font_def = load_font(FONT_PIXEL, FONT_SIZE_DEF)
+    font_ex = load_font(FONT_PIXEL, FONT_SIZE_EXAMPLE)
 
     max_width = WIDTH - PADDING * 2
 
     # Word (red, bold)
     draw.text((PADDING, PADDING), word, font=font_word, fill=RED)
 
-    # Part of speech (grey, italic, baseline-aligned with word)
+    # Part of speech (black, pixel, baseline-aligned with word)
     word_bbox = font_word.getbbox(word)
     pos_bbox = font_pos.getbbox(pos)
     pos_x = PADDING + word_bbox[2] + 5
     pos_y = PADDING + word_bbox[3] - pos_bbox[3]
-    draw.text((pos_x, pos_y), pos, font=font_pos, fill=GREY)
+    draw.text((pos_x, pos_y), pos, font=font_pos, fill=BLACK)
 
     # Divider — positioned below the word's actual rendered bottom
     divider_y = PADDING + word_bbox[3] + DIVIDER_MARGIN
@@ -242,14 +245,14 @@ def render_png(word: str, pos: str, definition: str, example: str):
         draw.text((PADDING, y), line, font=font_def, fill=BLACK)
         y += line_h_def
 
-    # Example (italic, grey)
+    # Example
     if example:
         y += 2
         line_h_ex = FONT_SIZE_EXAMPLE + 2
         for line in wrap_text(draw, f"\u201c{example}\u201d", font_ex, max_width):
             if y + line_h_ex > HEIGHT:
                 break
-            draw.text((PADDING, y), line, font=font_ex, fill=GREY)
+            draw.text((PADDING, y), line, font=font_ex, fill=BLACK)
             y += line_h_ex
 
     OUTPUT_DIR.mkdir(exist_ok=True)

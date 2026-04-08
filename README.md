@@ -120,9 +120,13 @@ To adapt it:
      FreeDictionaryAPI's supported languages are listed in its [documentation](https://freedictionaryapi.com).
    - The Tatoeba (used as backup source for examples) call in `fetch_tatoeba_example()` uses an ISO 639-3 code (for example, `por` for Portuguese).
      Tatoeba's supported languages are listed on their [statistics page](https://tatoeba.org/en/stats/sentences_by_language).
-3. If you need another font for your target script, the current code supports a variable font like Literata.
-   Commit [cbe4](https://github.com/fdmarcin/word-of-the-day-inkplate2/commit/cbe43081cc12dba7e5ebd188b374e03589b7d8a0) shows needed changes to use static fonts.
-   You'd need separate `.ttf` files for Regular, Bold, and Italic variants.
+3. If you need another font for your target script, the code uses two font types:
+
+   - `FONT_ROMAN` (Literata, variable font) for the main word only.
+   - `FONT_PIXEL` (Pixel Operator, static font) for the part of speech, definition, and example.
+
+   Replace either path in `render/render.py` with a font that supports your target script.
+   If you replace Literata with a static font, use `load_font()` instead of `load_variable_font()` when loading `font_word` in `render_png()`.
 
 Note that FreeDictionaryAPI coverage varies significantly by language, and the Tatoeba minimum word length heuristic (`TATOEBA_MIN_CHARS`) was chosen for Portuguese.
 You might want to adjust it for languages with different word length distributions.
