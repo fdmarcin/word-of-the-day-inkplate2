@@ -69,6 +69,16 @@ Schedule daily generation at 03:00:
 
 ## Inkplate configuration
 
+Follow these steps if you're setting this up on an Inkplate 2 from Soldered:
+
+1. Install and configure [Arduino IDE v2](https://www.arduino.cc/en/software/).
+1. Follow the Soldered [quick start guide](https://docs.soldered.com/inkplate/2/quick-start-guide/) to configure Arduino IDE and upload an example.
+1. In Arduino IDE, select **File > Open** and select `inkplate/inkplate.ino`.
+1. Fill out the variables in the sketch with:
+   - Your wifi name and password
+   - Path to the rendered image
+1. Upload the sketch to your board.
+
 TODO: document Arduino sketch, Wi-Fi setup, image URL, and deep sleep interval.
 
 ## Overrides

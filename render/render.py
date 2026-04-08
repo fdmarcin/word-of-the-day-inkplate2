@@ -39,7 +39,7 @@ DIVIDER_MARGIN = 3   # gap between word bottom and divider
 CONTENT_MARGIN = 4   # gap between divider and definition top
 
 BLACK = (0, 0, 0)
-GREY = (85, 85, 85)
+GREY = (0, 0, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 
