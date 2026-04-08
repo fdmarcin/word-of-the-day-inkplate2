@@ -65,22 +65,29 @@ To install and configure Apache2 on a RapsberryPi or a Debian/Ubuntu PC:
 
 ## Running
 
-Generate today's image:
+1. Generate today's image:
 
-```sh
-python render/render.py
-```
+   ```sh
+   python render/render.py
+   ```
 
-Output is written to `output/today.png` and the file is moved to `/var/www/html/today.png`.
+   Output is written to `output/today.png`.
+1. Move the generated file to the Apache2 directory:
+
+   ```sh
+   mv output/today.png /var/www/html
+   ```
+
+1. Check if you can see the image at `http://localhost/today.png` from the same PC, or change the URL to use your PC's IP.
 
 The word used is added to `data/history.json` so it doesn't appear again.
 
 ### Cron
 
-Schedule daily generation at 03:00:
+Schedule daily generation and moving image at 03:00:
 
 ```sh
-0 3 * * * /path/to/.venv/bin/python /path/to/render/render.py
+0 3 * * * /path/to/.venv/bin/python /path/to/render/render.py && mv output/today.png /var/www/html
 ```
 
 ## Inkplate configuration
@@ -91,15 +98,16 @@ Follow these steps if you're setting this up on an Inkplate 2 from Soldered:
 1. Follow the Soldered [quick start guide](https://docs.soldered.com/inkplate/2/quick-start-guide/) to configure Arduino IDE and upload an example.
 1. In Arduino IDE, select **File > Open** and select `inkplate/inkplate.ino`.
 1. Fill out the variables in the sketch with:
-   - Your wifi name and password
-   - Path to the rendered image
+   - `WIFI_SSID` - your wi-fi name
+   - `WIFI_PASSWORD` - your wi-fi password
+   - `IMAGE_URL` - the path to the rendered image
+   - `SLEEP_INTERVAL_US` - how often the board should download the image
 1. Upload the sketch to your board.
 
-TODO: document Arduino sketch, Wi-Fi setup, image URL, and deep sleep interval.
+## Overrides (optional)
 
-## Overrides
-
-Some words may have missing, incorrect, or Brazilian Portuguese example sentences. Add manual substitutions to `data/overrides.json`:
+Some words may have missing, incorrect, or Brazilian Portuguese example sentences.
+Add manual substitutions to `data/overrides.json`:
 
 ```json
 {
@@ -123,20 +131,20 @@ Any word present in `overrides.json` bypasses the API entirely. All three fields
 }
 ```
 
-TODO: support partial overrides, where only some fields replace the API response.
+## Adapting this project
 
-## Adapting for another language
+### For another language
 
 The project has minimal language-specific hardcoding.
 To adapt it:
 
 1. Replace `data/wordlist.txt` with a word list for your target language, one word or phrase per line, and run `parse_wordlist.py`.
-2. In `render/render.py`, update the two API language codes at the top of the file:
+1. In `render/render.py`, update the two API language codes at the top of the file:
    - `API_DICT` uses an ISO 639-1 code (for example, `pt` for Portuguese).
      FreeDictionaryAPI's supported languages are listed in its [documentation](https://freedictionaryapi.com).
    - The Tatoeba (used as backup source for examples) call in `fetch_tatoeba_example()` uses an ISO 639-3 code (for example, `por` for Portuguese).
      Tatoeba's supported languages are listed on their [statistics page](https://tatoeba.org/en/stats/sentences_by_language).
-3. If you need another font for your target script, the code uses two font types:
+1. If you need another font for your target script, the code uses two font types:
 
    - `FONT_ROMAN` (Literata, variable font) for the main word only.
    - `FONT_PIXEL` (Pixel Operator, static font) for the part of speech, definition, and example.
@@ -147,9 +155,21 @@ To adapt it:
 Note that FreeDictionaryAPI coverage varies significantly by language, and the Tatoeba minimum word length heuristic (`TATOEBA_MIN_CHARS`) was chosen for Portuguese.
 You might want to adjust it for languages with different word length distributions.
 
+## For another board or screen
+
+The main changes needed are:
+
+1. Update `WIDTH` and `HEIGHT` in `render/render.py` to match your screen's resolution.
+1. In the Arduino sketch, update the `#ifndef` check at the top to match your board's identifier,
+   and select the correct board in the Arduino IDE.
+   Refer to the [Inkplate Arduino library](https://github.com/SolderedElectronics/Inkplate-Arduino-library) for supported boards and their identifiers.
+1. If your screen has a different color depth, adjust the colors used in `render/render.py`.
+   The Inkplate 2 supports black, white, and red, so any other color will not render correctly.
+
 ## License
 
 This project is licensed under the MIT license.
 See [LICENSE](./LICENSE).
 
-The font used is Literata and its license is in `render/fonts`.
+The fonts used are Literata and PixelOperator.
+Their licenses are in `render/fonts/licenses`.
