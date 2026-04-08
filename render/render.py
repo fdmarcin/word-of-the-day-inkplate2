@@ -34,9 +34,9 @@ FONT_ITALIC = FONTS_DIR / "Literata-Italic-VariableFont_opsz,wght.ttf"
 # ---------------------------------------------------------------------------
 
 WIDTH, HEIGHT = 212, 104
-PADDING = 6
+PADDING = 4
 DIVIDER_MARGIN = 3   # gap between word bottom and divider
-CONTENT_MARGIN = 4  # gap between divider and definition top
+CONTENT_MARGIN = 4   # gap between divider and definition top
 
 BLACK = (0, 0, 0)
 GREY = (85, 85, 85)
@@ -44,9 +44,9 @@ RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 
 FONT_SIZE_WORD = 26
-FONT_SIZE_POS = 11
-FONT_SIZE_DEF = 11
-FONT_SIZE_EXAMPLE = 10
+FONT_SIZE_POS = 12
+FONT_SIZE_DEF = 13
+FONT_SIZE_EXAMPLE = 11
 
 WGHT_REGULAR = 400
 WGHT_BOLD = 700
@@ -58,8 +58,9 @@ WGHT_BOLD = 700
 API_DICT = "https://freedictionaryapi.com/api/v1/entries/pt"
 API_TATOEBA = "https://api.tatoeba.org/v1/sentences"
 MAX_RETRIES = 10
-TATOEBA_MIN_WORDS = 4   # ignore very short sentences
-TATOEBA_MIN_CHARS = 6   # don't query Tatoeba for short/ambiguous words
+TATOEBA_MIN_WORDS = 2   # ignore very short sentences
+TATOEBA_MAX_WORDS = 12  # ignore sentences too long to fit the screen
+TATOEBA_MIN_CHARS = 5   # don't query Tatoeba for short/ambiguous words
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -147,7 +148,12 @@ def extract_content(entry: dict) -> tuple[str, str, str] | None:
         return None
 
     examples = sense.get("examples", [])
-    example = strip_parens(examples[0]) if examples else ""
+    example = ""
+    for ex in examples:
+        ex = strip_parens(ex)
+        if len(ex.split()) <= TATOEBA_MAX_WORDS:
+            example = ex
+            break
 
     return pos, definition, example
 
@@ -171,7 +177,7 @@ def fetch_tatoeba_example(word: str) -> str:
     sentences = [
         s["text"] for s in resp.json().get("data", [])
         if not s.get("is_unapproved")
-        and len(s["text"].split()) >= TATOEBA_MIN_WORDS
+        and TATOEBA_MIN_WORDS <= len(s["text"].split()) <= TATOEBA_MAX_WORDS
     ]
 
     if not sentences:
@@ -209,7 +215,7 @@ def render_png(word: str, pos: str, definition: str, example: str):
     font_word = load_font(FONT_ROMAN, FONT_SIZE_WORD, WGHT_BOLD)
     font_pos = load_font(FONT_ITALIC, FONT_SIZE_POS, WGHT_REGULAR)
     font_def = load_font(FONT_ROMAN, FONT_SIZE_DEF, WGHT_REGULAR)
-    font_ex = load_font(FONT_ITALIC, FONT_SIZE_EXAMPLE, WGHT_REGULAR)
+    font_ex = load_font(FONT_ROMAN, FONT_SIZE_EXAMPLE, WGHT_REGULAR)
 
     max_width = WIDTH - PADDING * 2
 
