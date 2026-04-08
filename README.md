@@ -5,13 +5,16 @@ Display a Portuguese word a day on an [Inkplate 2](https://soldered.com/products
 Fetches definitions from [FreeDictionaryAPI](https://freedictionaryapi.com) (Wiktionary data) and example sentences from [Tatoeba](https://tatoeba.org) as a fallback.
 Renders a 212×104 PNG served over HTTP, which the Inkplate fetches on a daily schedule.
 
-Example image:
-
-![definition and example for pretender](img/example.png)
-
-IRL, with a teaspoon for scale:
-
-![definition and example for pretender](img/example-IRL.jpg)
+<table>
+  <tr>
+    <td width="50%" align="center"><img src="img/example.png"></td>
+    <td width="50%"><img src="img/example-IRL.jpg"></td>
+  </tr>
+  <tr>
+    <td align="center">Rendered image</td>
+    <td align="center">In production, with a teaspoon for scale</td>
+  </tr>
+</table>
 
 ## Prerequisites
 
