@@ -234,7 +234,7 @@ def render_png(word: str, pos: str, definition: str, example: str):
 
     # Divider — positioned below the word's actual rendered bottom
     divider_y = PADDING + word_bbox[3] + DIVIDER_MARGIN
-    draw.line([(PADDING, divider_y), (WIDTH - PADDING, divider_y)], fill=(170, 170, 170), width=1)
+    draw.line([(PADDING, divider_y), (WIDTH - PADDING, divider_y)], fill=BLACK, width=1)
 
     # Definition
     y = divider_y + CONTENT_MARGIN
