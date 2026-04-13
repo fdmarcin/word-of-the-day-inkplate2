@@ -68,29 +68,35 @@ To install and configure Apache2 on a RapsberryPi or a Debian/Ubuntu PC:
 
 ## Running
 
-1. Generate today's image:
+To generate today's image and copy the generated file to the Apache2 directory:
+
+1. In the project folder, run:
 
    ```sh
-   python render/render.py
+   python main.py
    ```
 
-   Output is written to `output/today.png`.
-1. Move the generated file to the Apache2 directory:
-
-   ```sh
-   mv output/today.png /var/www/html
-   ```
+  This generates an image, saves it to `output/today.png` and moves it to `/var/www/html/today.png`.
+  To use a different target directory, edit `SERVE_PNG` in `main.py`.
 
 1. Check if you can see the image at `http://localhost/today.png` from the same PC, or change the URL to use your PC's IP.
 
 The word used is added to `data/history.json` so it doesn't appear again.
 
+To only generate a new image without copying it over, run `render/render.py`.
+
 ### Cron
 
-Schedule daily generation and moving image at 03:00:
+Schedule daily generation and moving image at 00:01 local time:
 
 ```sh
-0 3 * * * cd /path/to/word-of-the-day-inkplate2 && python render/render.py && mv output/today.png /var/www/html
+1 0 * * * /path/to/word-of-the-day-inkplate2/.venv/bin/python /path/to/word-of-the-day-inkplate2/main.py 2>&1 | logger -t wordofday
+```
+
+To see this job's logs, run:
+
+```sh
+journalctl -t wordofday
 ```
 
 ## Inkplate configuration
