@@ -12,7 +12,7 @@ Renders a 212×104 PNG served over HTTP, which the Inkplate fetches on a daily s
   </tr>
   <tr>
     <td align="center">Rendered image</td>
-    <td align="center">In production, with a teaspoon for scale</td>
+    <td align="center">In production, with a teaspoon for scale. The horizontal line now also appears.</td>
   </tr>
 </table>
 
