@@ -164,7 +164,7 @@ To adapt it:
 Note that FreeDictionaryAPI coverage varies significantly by language, and the Tatoeba minimum word length heuristic (`TATOEBA_MIN_CHARS`) was chosen for Portuguese.
 You might want to adjust it for languages with different word length distributions.
 
-## For another board or screen
+### For another board or screen
 
 The main changes needed are:
 
