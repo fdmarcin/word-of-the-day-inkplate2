@@ -44,7 +44,8 @@ pip install -r requirements.txt
 ### Word list
 
 The word list (`data/wordlist.txt`) is sourced from [Linguee's top 201-800 Portuguese words](https://www.linguee.com/portuguese-english/topportuguese/201-1000.html), saved manually and trimmed to have one word/phrase per line.
-Parse it once to generate `data/words.json`:
+
+If you use a different word list, parse it once to generate `data/words.json`:
 
 ```sh
 python render/parse_wordlist.py
@@ -53,18 +54,17 @@ python render/parse_wordlist.py
 ### Apache2
 
 To serve the image, you can use an Apache2 server on a RaspberryPi or a home lab PC.
-To install and configure Apache2 on a RapsberryPi or a Debian/Ubuntu PC:
 
-1. Run the following commands in the terminal:
+To install and configure Apache2 on a RapsberryPi or a Debian/Ubuntu PC, run the following commands in the terminal:
 
-   In the `chown` command, change `pi` to use your username.
+In the `chown` command, change `pi` to use your username.
 
-   ```bash
-   sudo apt update
-   sudo apt install apache2 -y
-   sudo chown pi:www-data /var/www/html
-   sudo chmod 755 /var/www/html
-   ```
+```bash
+sudo apt update
+sudo apt install apache2 -y
+sudo chown pi:www-data /var/www/html
+sudo chmod 755 /var/www/html
+```
 
 ## Running
 
@@ -76,8 +76,8 @@ To generate today's image and copy the generated file to the Apache2 directory:
    python main.py
    ```
 
-  This generates an image, saves it to `output/today.png` and moves it to `/var/www/html/today.png`.
-  To use a different target directory, edit `SERVE_PNG` in `main.py`.
+   This generates an image, saves it to `output/today.png` and moves it to `/var/www/html/today.png`.
+   To use a different target directory, edit `SERVE_PNG` in `main.py`.
 
 1. Check if you can see the image at `http://localhost/today.png` from the same PC, or change the URL to use your PC's IP.
 
