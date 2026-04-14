@@ -18,9 +18,9 @@ Renders a 212×104 PNG served over HTTP, which the Inkplate fetches on a daily s
 
 ## Prerequisites
 
+- RaspberryPi or a home lab PC to generate and serve the image with Apache2
 - Python 3.14+
 - [mise-en-place](https://mise.jdx.dev) (optional, for Python version and virtualenv management)
-- Apache2 (for serving the output image)
 
 ## Setup
 
