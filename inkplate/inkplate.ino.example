@@ -38,7 +38,7 @@ void setup()
 
     // Fetch and display the image
     Serial.println("Downloading image...");
-    if (!display.drawImage(IMAGE_URL, 0, 0, false, false))
+    if (!display.image.drawPngFromWeb(IMAGE_URL, 0, 0, false, false))
     {
         display.clearDisplay();
         display.println("Image load error");
