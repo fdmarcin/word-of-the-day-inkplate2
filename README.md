@@ -114,7 +114,7 @@ Follow these steps if you're setting this up on an Inkplate 2 from Soldered:
 
 1. Install and configure [Arduino IDE v2](https://www.arduino.cc/en/software/).
 1. Follow the Soldered [quick start guide](https://docs.soldered.com/inkplate/2/quick-start-guide/) to configure Arduino IDE and upload an example.
-1. Copy `inkplate/example-inkplate.ino` to `inkplate/inkplate.ino`.
+1. Copy `inkplate/inkplate.ino.example` to `inkplate/inkplate.ino`.
 1. In Arduino IDE, select **File > Open** and select `inkplate/inkplate.ino`.
 1. Fill out the variables in the sketch with:
    - `WIFI_SSID` - your wi-fi name
